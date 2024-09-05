@@ -16,9 +16,16 @@ from .util import config_fixture
 
 # Minimal concrete implementation that records method calls
 class AdapterTester(BaseHarmonyAdapter):
+    """ """
     process_args = []
 
     def process_item(self, item, source):
+        """
+
+        :param item: 
+        :param source: 
+
+        """
         AdapterTester.process_args.append((item, source))
         if item.id == "mutate-me":
             item.id = "i-mutated-you"
@@ -26,17 +33,21 @@ class AdapterTester(BaseHarmonyAdapter):
 
 
 class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
+    """ """
     def setUp(self):
+        """ """
         AdapterTester.process_args = []
         self.config = config_fixture()
 
     def test_items_with_no_input_source_raise_exceptions(self):
+        """ """
         catalog = Catalog("0", "Catalog 0")
         catalog.add_item(Item("1", None, [0, 0, 1, 1], "2020-01-01T00:00:00.000Z", {}))
         adapter = AdapterTester(Message(full_message), catalog, config=self.config)
         self.assertRaises(RuntimeError, adapter.invoke)
 
     def test_invocation_processes_items_with_sources(self):
+        """ """
         catalog = Catalog("0", "Catalog 0")
         catalog.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
 
@@ -55,6 +66,11 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
 
     @patch("harmony.adapter.read_file")
     def test_invocation_follows_linked_catalogs(self, test_patch):
+        """
+
+        :param test_patch: 
+
+        """
         catalog0 = Catalog("0", "Catalog 0")
         catalog0.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
         catalog1 = Catalog("1", "Catalog 1")
@@ -80,6 +96,7 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
         self.assertEqual(AdapterTester.process_args[3][0].bbox, items_b[1].bbox)
 
     def test_invocation_recurses_subcatalogs(self):
+        """ """
         catalog = Catalog("0", "Catalog 0")
         catalog.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
         catalog.add_child(Catalog("1a", "Catalog 1a"))
@@ -116,6 +133,11 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
 
     @patch("harmony.adapter.read_file")
     def test_get_all_items_follows_links(self, test_patch):
+        """
+
+        :param test_patch: 
+
+        """
         catalog0 = Catalog("0", "Catalog 0")
         catalog0.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
         catalog1 = Catalog("1", "Catalog 1")
@@ -144,6 +166,11 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
 
     @patch("harmony.adapter.read_file")
     def test_get_all_items_handles_children(self, test_patch):
+        """
+
+        :param test_patch: 
+
+        """
         catalog = Catalog("0", "Catalog 0")
         catalog.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
         catalog.add_child(Catalog("1a", "Catalog 1a"))
@@ -172,6 +199,7 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
         self.assertEqual(all_items, [*items_a, *items_b])
 
     def test_unaltered_ids_are_assigned_new_uuids(self):
+        """ """
         catalog = Catalog("0", "Catalog 0")
         catalog.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
 
@@ -190,6 +218,7 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
         self.assertNotEqual(out_items[1].id, items[1].id)
 
     def test_altered_ids_are_retained(self):
+        """ """
         catalog = Catalog("0", "Catalog 0")
         catalog.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
 
@@ -205,6 +234,7 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
         self.assertEqual(out_items[0].id, "i-mutated-you")
 
     def test_legacy_invocations_create_stac_catalogs(self):
+        """ """
         message = Message(full_message)
         message.isSynchronous = False
         adapter = AdapterTester(message, config=self.config)
