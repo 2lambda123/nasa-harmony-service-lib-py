@@ -1,17 +1,17 @@
 """
 Tests STAC-based invocation styles and methods on BaseHarmonyAdapter
 """
-
 import unittest
 from unittest.mock import patch
 
-from pystac import Catalog, Item, Link
-
-from harmony.adapter import BaseHarmonyAdapter
-from harmony.message import Message
+from pystac import Catalog
+from pystac import Item
+from pystac import Link
 
 from .example_messages import full_message
 from .util import config_fixture
+from harmony.adapter import BaseHarmonyAdapter
+from harmony.message import Message
 
 
 # Minimal concrete implementation that records method calls
