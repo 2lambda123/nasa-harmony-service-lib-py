@@ -34,6 +34,7 @@ class AdapterTester(BaseHarmonyAdapter):
 
 class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
     """ """
+
     def setUp(self):
         """ """
         AdapterTester.process_args = []
@@ -42,14 +43,18 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
     def test_items_with_no_input_source_raise_exceptions(self):
         """ """
         catalog = Catalog("0", "Catalog 0")
-        catalog.add_item(Item("1", None, [0, 0, 1, 1], "2020-01-01T00:00:00.000Z", {}))
-        adapter = AdapterTester(Message(full_message), catalog, config=self.config)
+        catalog.add_item(
+            Item("1", None, [0, 0, 1, 1], "2020-01-01T00:00:00.000Z", {}))
+        adapter = AdapterTester(Message(full_message),
+                                catalog,
+                                config=self.config)
         self.assertRaises(RuntimeError, adapter.invoke)
 
     def test_invocation_processes_items_with_sources(self):
         """ """
         catalog = Catalog("0", "Catalog 0")
-        catalog.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
+        catalog.add_link(
+            Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
 
         message = Message(full_message)
         items = [
@@ -72,9 +77,11 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
 
         """
         catalog0 = Catalog("0", "Catalog 0")
-        catalog0.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
+        catalog0.add_link(
+            Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
         catalog1 = Catalog("1", "Catalog 1")
-        catalog1.add_link(Link("harmony_source", "http://example.com/C0002-EXAMPLE"))
+        catalog1.add_link(
+            Link("harmony_source", "http://example.com/C0002-EXAMPLE"))
         catalog0.add_link(Link("next", "catalog1.json"))
         test_patch.return_value = catalog1
         message = Message(full_message)
@@ -90,23 +97,27 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
         catalog1.add_items(items_b)
         adapter = AdapterTester(message, catalog0, config=self.config)
         adapter.invoke()
-        self.assertEqual(AdapterTester.process_args[0][0].bbox, items_a[0].bbox)
-        self.assertEqual(AdapterTester.process_args[1][0].bbox, items_a[1].bbox)
-        self.assertEqual(AdapterTester.process_args[2][0].bbox, items_b[0].bbox)
-        self.assertEqual(AdapterTester.process_args[3][0].bbox, items_b[1].bbox)
+        self.assertEqual(AdapterTester.process_args[0][0].bbox,
+                         items_a[0].bbox)
+        self.assertEqual(AdapterTester.process_args[1][0].bbox,
+                         items_a[1].bbox)
+        self.assertEqual(AdapterTester.process_args[2][0].bbox,
+                         items_b[0].bbox)
+        self.assertEqual(AdapterTester.process_args[3][0].bbox,
+                         items_b[1].bbox)
 
     def test_invocation_recurses_subcatalogs(self):
         """ """
         catalog = Catalog("0", "Catalog 0")
-        catalog.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
+        catalog.add_link(
+            Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
         catalog.add_child(Catalog("1a", "Catalog 1a"))
         subcatalog = Catalog("1b", "Catalog 1b")
         catalog.add_child(subcatalog)
         subsubcatalog_a = Catalog("2a", "Catalog 2a")
         subsubcatalog_b = Catalog("2b", "Catalog 2b")
         subsubcatalog_b.add_link(
-            Link("harmony_source", "http://example.com/C0002-EXAMPLE")
-        )
+            Link("harmony_source", "http://example.com/C0002-EXAMPLE"))
         subcatalog.add_children([subsubcatalog_a, subsubcatalog_b])
 
         message = Message(full_message)
@@ -122,10 +133,14 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
         subsubcatalog_b.add_items(items_b)
         adapter = AdapterTester(message, catalog, config=self.config)
         adapter.invoke()
-        self.assertEqual(AdapterTester.process_args[0][0].bbox, items_a[0].bbox)
-        self.assertEqual(AdapterTester.process_args[1][0].bbox, items_a[1].bbox)
-        self.assertEqual(AdapterTester.process_args[2][0].bbox, items_b[0].bbox)
-        self.assertEqual(AdapterTester.process_args[3][0].bbox, items_b[1].bbox)
+        self.assertEqual(AdapterTester.process_args[0][0].bbox,
+                         items_a[0].bbox)
+        self.assertEqual(AdapterTester.process_args[1][0].bbox,
+                         items_a[1].bbox)
+        self.assertEqual(AdapterTester.process_args[2][0].bbox,
+                         items_b[0].bbox)
+        self.assertEqual(AdapterTester.process_args[3][0].bbox,
+                         items_b[1].bbox)
         self.assertEqual(AdapterTester.process_args[0][1], message.sources[0])
         self.assertEqual(AdapterTester.process_args[1][1], message.sources[0])
         self.assertEqual(AdapterTester.process_args[2][1], message.sources[1])
@@ -139,9 +154,11 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
 
         """
         catalog0 = Catalog("0", "Catalog 0")
-        catalog0.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
+        catalog0.add_link(
+            Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
         catalog1 = Catalog("1", "Catalog 1")
-        catalog1.add_link(Link("harmony_source", "http://example.com/C0002-EXAMPLE"))
+        catalog1.add_link(
+            Link("harmony_source", "http://example.com/C0002-EXAMPLE"))
         catalog0.add_link(Link("next", "catalog1.json"))
         catalog1.add_link(Link("prev", "catalog0.json"))
         test_patch.return_value = catalog1
@@ -172,15 +189,15 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
 
         """
         catalog = Catalog("0", "Catalog 0")
-        catalog.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
+        catalog.add_link(
+            Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
         catalog.add_child(Catalog("1a", "Catalog 1a"))
         subcatalog = Catalog("1b", "Catalog 1b")
         catalog.add_child(subcatalog)
         subsubcatalog_a = Catalog("2a", "Catalog 2a")
         subsubcatalog_b = Catalog("2b", "Catalog 2b")
         subsubcatalog_b.add_link(
-            Link("harmony_source", "http://example.com/C0002-EXAMPLE")
-        )
+            Link("harmony_source", "http://example.com/C0002-EXAMPLE"))
         subcatalog.add_children([subsubcatalog_a, subsubcatalog_b])
 
         message = Message(full_message)
@@ -201,7 +218,8 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
     def test_unaltered_ids_are_assigned_new_uuids(self):
         """ """
         catalog = Catalog("0", "Catalog 0")
-        catalog.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
+        catalog.add_link(
+            Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
 
         message = Message(full_message)
         items = [
@@ -220,11 +238,13 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
     def test_altered_ids_are_retained(self):
         """ """
         catalog = Catalog("0", "Catalog 0")
-        catalog.add_link(Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
+        catalog.add_link(
+            Link("harmony_source", "http://example.com/C0001-EXAMPLE"))
 
         message = Message(full_message)
         items = [
-            Item("mutate-me", None, [0, 0, 1, 1], "2020-01-01T00:00:00.000Z", {}),
+            Item("mutate-me", None, [0, 0, 1, 1], "2020-01-01T00:00:00.000Z",
+                 {}),
             Item("2", None, [0, 0, 1, 1], "2020-01-01T00:00:00.000Z", {}),
         ]
         catalog.add_items(items)
