@@ -3,12 +3,13 @@ Tests STAC-based invocation styles and methods on BaseHarmonyAdapter
 """
 
 import unittest
-
 from unittest.mock import patch
+
 from pystac import Catalog, Item, Link
 
-from harmony.message import Message
 from harmony.adapter import BaseHarmonyAdapter
+from harmony.message import Message
+
 from .example_messages import full_message
 from .util import config_fixture
 
