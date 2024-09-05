@@ -22,8 +22,8 @@ class AdapterTester(BaseHarmonyAdapter):
     def process_item(self, item, source):
         """
 
-        :param item: 
-        :param source: 
+        :param item:
+        :param source:
 
         """
         AdapterTester.process_args.append((item, source))
@@ -68,7 +68,7 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
     def test_invocation_follows_linked_catalogs(self, test_patch):
         """
 
-        :param test_patch: 
+        :param test_patch:
 
         """
         catalog0 = Catalog("0", "Catalog 0")
@@ -135,7 +135,7 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
     def test_get_all_items_follows_links(self, test_patch):
         """
 
-        :param test_patch: 
+        :param test_patch:
 
         """
         catalog0 = Catalog("0", "Catalog 0")
@@ -168,7 +168,7 @@ class TestBaseHarmonyAdapterDefaultInvoke(unittest.TestCase):
     def test_get_all_items_handles_children(self, test_patch):
         """
 
-        :param test_patch: 
+        :param test_patch:
 
         """
         catalog = Catalog("0", "Catalog 0")
